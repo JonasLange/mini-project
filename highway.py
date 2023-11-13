@@ -17,13 +17,15 @@ class Highway(ParallelEnv):
 
     def reset(self, seed=None, options=None):
         if not self.traci_connected:
+            print("first start")
             self._start()
             #traci.close()
+            self.traci_connected=True
         else:
+            print("resetting existing simulation")
             start_sumo("cfg/freeway.sumo.cfg", True)
             random.seed(1)
         #self._start()
-        self.traci_connected=True
 
 
         observations = {}
