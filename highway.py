@@ -52,7 +52,8 @@ class Highway(ParallelEnv):
         truncated = {}
         infos = {}
         for agent, action in actions.items():
-            self.plexe.get_vehicle_data(agent)
+            print(self.plexe.get_vehicle_data(agent))
+
             observations[agent]=random.random()
             rewards[agent]=random.random()
             terminated[agent]=False
