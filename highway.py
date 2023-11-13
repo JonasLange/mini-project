@@ -82,7 +82,7 @@ class Highway(ParallelEnv):
         traci.gui.trackVehicle("View #0", "learner")
         traci.gui.setZoom("View #0", 20000)
 
-    def _add_vehicle(plexe, real_engine=False):
+    def _add_vehicle(self, plexe, real_engine=False):
         """
         Adds the learner to the simulation
         """
