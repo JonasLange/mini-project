@@ -25,7 +25,7 @@ class Highway(ParallelEnv):
             print("resetting existing simulation")
             start_sumo("cfg/freeway.sumo.cfg", True)
             random.seed(1)
-        
+
         # create vehicles and track the learner
         self._add_vehicle(False)
         traci.gui.trackVehicle("View #0", "learner")
@@ -38,7 +38,8 @@ class Highway(ParallelEnv):
         return observations, infos
     def step(self, actions):
         #ToDo: send actions via traci
-
+        for agent, action in actions.items():
+            self.plexe.set_cc_desired_speed(agent, action)
         #perform the next simulation step
         traci.simulationStep()
 
