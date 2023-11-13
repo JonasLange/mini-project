@@ -2,7 +2,7 @@ from pettingzoo import ParallelEnv
 import random
 from gymnasium import spaces
 import functools
-import sys, traci
+import sys, traci, os
 from plexe import Plexe, ACC, CACC, FAKED_CACC, RPM, GEAR, ACCELERATION, SPEED
 
 
@@ -58,12 +58,14 @@ class Highway(ParallelEnv):
     def action_space(self, agent):
         return spaces.Discrete(3)
 
-    def _start():
+    def _start(self):
         if 'SUMO_HOME' in os.environ:
             tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
             sys.path.append(tools)
         else:
             sys.exit("please declare environment variable 'SUMO_HOME'")
+        self.plexe = Plexe()
+        traci.addStepListener(self.plexe)
 
 
 #For Testing
