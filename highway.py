@@ -78,7 +78,7 @@ class Highway(ParallelEnv):
         traci.addStepListener(self.plexe)
         self.step = 0
         # create vehicles and track the joiner
-        self.topology = self._add_vehicle(self.plexe, real_engine=False)
+        self.topology = self._add_vehicle(self.plexe, False)
         traci.gui.trackVehicle("View #0", "learner")
         traci.gui.setZoom("View #0", 20000)
 
