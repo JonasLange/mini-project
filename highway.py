@@ -13,14 +13,14 @@ class Highway(ParallelEnv):
     def __init__(self):
         self.possible_agents=["vehicle"]
         self.agents = ["vehicle","vehicle","vehicle"]
-        self.is_paired_with_runner = False
+        self.traci_connected = False
 
     def reset(self, seed=None, options=None):
-        try:
+        if self.traci_connected:
             traci.close()
-        except:
-            pass
+
         self._start()
+        self.traci_connected=True
 
 
         observations = {}
