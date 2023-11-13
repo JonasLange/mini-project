@@ -73,7 +73,7 @@ class Highway(ParallelEnv):
         #else:
         #    sys.exit("please declare environment variable 'SUMO_HOME'")
         random.seed(1)
-        start_sumo("cfg/freeway.sumo.cfg", True)
+        start_sumo("cfg/freeway.sumo.cfg", False)
         self.plexe = Plexe()
         traci.addStepListener(self.plexe)
         self.step = 0
