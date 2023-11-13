@@ -37,9 +37,11 @@ class Highway(ParallelEnv):
         infos = {a: {} for a in self.agents}
         return observations, infos
     def step(self, actions):
+        #send the actions
         print(actions)
         for agent, action in actions.items():
             self.plexe.set_cc_desired_speed(agent, action/3.6)
+        
         #perform the next simulation step
         traci.simulationStep()
 
@@ -50,14 +52,7 @@ class Highway(ParallelEnv):
         truncated = {}
         infos = {}
         for agent, action in actions.items():
-            #if action == "accelerate":
-            #    pass
-            #elif action == "stay":
-            #    pass
-            #elif action == "break":
-            #    pass
-            #else:
-            #    raise KeyError("unknow action")
+            self.plexe.get_vehicle_data(agent)
             observations[agent]=random.random()
             rewards[agent]=random.random()
             terminated[agent]=False
