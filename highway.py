@@ -25,7 +25,7 @@ class Highway(ParallelEnv):
             print("resetting existing simulation")
             start_sumo("cfg/freeway.sumo.cfg", True)
             random.seed(1)
-        #self._start()
+        self._add_vehicle(False)
 
 
         observations = {}
