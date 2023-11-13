@@ -54,9 +54,12 @@ class Highway(ParallelEnv):
         infos = {}
         for agent, action in actions.items():
             speed = self.plexe.get_vehicle_data(agent).speed
-            print(speed)
             observations[agent]=int(speed)
-            rewards[agent]=random.random()
+            distance = traci.vehicle.getDistance(agent)
+            print(f"traveled distance: {distance} meters")
+            emmissions = traci.vehicle.getCO2Emission(agent)
+            print(f"emmits {emmissions} mg CO2 per second")
+            rewards[agent]=self._reward(distance,emmissions)
             terminated[agent]=False
             truncated[agent]=False
             infos[agent]=None
@@ -99,6 +102,9 @@ class Highway(ParallelEnv):
         self.plexe.set_active_controller(vid, ACC)
         #plexe.set_path_cacc_parameters(vid, distance=JOIN_DISTANCE)
         return topology
+    def _reward(self, emmisions, distance):
+        #currently ignoring emmisions
+        return distance
 
 #For Testing
 from pettingzoo.test import parallel_api_test
