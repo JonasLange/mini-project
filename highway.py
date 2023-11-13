@@ -37,7 +37,7 @@ class Highway(ParallelEnv):
         infos = {a: {} for a in self.agents}
         return observations, infos
     def step(self, actions):
-        #ToDo: send actions via traci
+        print(actions)
         for agent, action in actions.items():
             self.plexe.set_cc_desired_speed(agent, action)
         #perform the next simulation step
