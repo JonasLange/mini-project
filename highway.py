@@ -16,10 +16,13 @@ class Highway(ParallelEnv):
         self.traci_connected = False
 
     def reset(self, seed=None, options=None):
-        if self.traci_connected:
-            traci.close()
-
-        self._start()
+        if not self.traci_connected:
+            self._start()
+            #traci.close()
+        else:
+            start_sumo("cfg/freeway.sumo.cfg", True)
+            random.seed(1)
+        #self._start()
         self.traci_connected=True
 
 
