@@ -4,8 +4,8 @@ from gymnasium import spaces
 import functools
 import sys, traci, os
 from plexe import Plexe, ACC, CACC, FAKED_CACC, RPM, GEAR, ACCELERATION, SPEED
-
-
+from utils import add_platooning_vehicle, communicate, get_distance, \
+    start_sumo, running
 class Highway(ParallelEnv):
     metadata = {
         "name": "highway_v0",
@@ -16,10 +16,9 @@ class Highway(ParallelEnv):
         self.is_paired_with_runner = False
 
     def reset(self, seed=None, options=None):
-        if not self.is_paired_with_runner:
-            self._start()
-        else:
-            pass
+        traci.close()
+        self._start()
+
 
         observations = {}
         for agent in self.agents:
@@ -27,6 +26,12 @@ class Highway(ParallelEnv):
         infos = {a: {} for a in self.agents}
         return observations, infos
     def step(self, actions):
+        #ToDo: send actions via traci
+
+        #perform the next simulation step
+        traci.simulationStep()
+
+        #ToDo: calc observations/rewards
         observations = {}
         rewards={}
         terminated = {}
@@ -66,7 +71,28 @@ class Highway(ParallelEnv):
             sys.exit("please declare environment variable 'SUMO_HOME'")
         self.plexe = Plexe()
         traci.addStepListener(self.plexe)
+        self.step = 0
+        start_sumo("cfg/freeway.sumo.cfg", True)
+        random.seed(1)
+        # create vehicles and track the joiner
+        self.topology = self._add_vehicle(self.plexe, real_engine=False)
+        traci.gui.trackVehicle("View #0", "learner")
+        traci.gui.setZoom("View #0", 20000)
 
+    def _add_vehicle(plexe, real_engine=False):
+        """
+        Adds the learner to the simulation
+        """
+        topology = {}
+
+        # add a vehicle that wants to join the platoon
+        vid = "learner"
+        add_platooning_vehicle(plexe, vid, 10, 1, 10, 5, real_engine)
+        plexe.set_fixed_lane(vid, 1, safe=False)
+        traci.vehicle.setSpeedMode(vid, 0)
+        plexe.set_active_controller(vid, ACC)
+        #plexe.set_path_cacc_parameters(vid, distance=JOIN_DISTANCE)
+        return topology
 
 #For Testing
 from pettingzoo.test import parallel_api_test
