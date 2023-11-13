@@ -25,8 +25,11 @@ class Highway(ParallelEnv):
             print("resetting existing simulation")
             start_sumo("cfg/freeway.sumo.cfg", True)
             random.seed(1)
+        
+        # create vehicles and track the learner
         self._add_vehicle(False)
-
+        traci.gui.trackVehicle("View #0", "learner")
+        traci.gui.setZoom("View #0", 20000)
 
         observations = {}
         for agent in self.agents:
@@ -81,9 +84,7 @@ class Highway(ParallelEnv):
         start_sumo("cfg/freeway.sumo.cfg", False)
         self.plexe = Plexe()
         traci.addStepListener(self.plexe)
-        # create vehicles and track the joiner
-        traci.gui.trackVehicle("View #0", "learner")
-        traci.gui.setZoom("View #0", 20000)
+
 
     def _add_vehicle(self, real_engine=False):
         """
