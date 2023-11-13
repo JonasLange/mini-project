@@ -53,7 +53,7 @@ class Highway(ParallelEnv):
         truncated = {}
         infos = {}
         for agent, action in actions.items():
-            speed = self.plexe.get_vehicle_data(agent)
+            speed = self.plexe.get_vehicle_data(agent).speed
             print(speed)
             observations[agent]=int(speed)
             rewards[agent]=random.random()
@@ -104,4 +104,5 @@ class Highway(ParallelEnv):
 from pettingzoo.test import parallel_api_test
 if __name__ == "__main__":
     env = Highway()
-    parallel_api_test(env, num_cycles=1_000)
+    #testing for 5 seconds each
+    parallel_api_test(env, num_cycles=500)
