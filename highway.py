@@ -86,7 +86,7 @@ class Highway(ParallelEnv):
         traci.gui.trackVehicle("View #0", "learner")
         traci.gui.setZoom("View #0", 20000)
 
-    def _add_vehicle(self, plexe, real_engine=False):
+    def _add_vehicle(self, real_engine=False):
         """
         Adds the learner to the simulation
         """
@@ -94,10 +94,10 @@ class Highway(ParallelEnv):
 
         # add a vehicle that wants to join the platoon
         vid = "learner"
-        add_platooning_vehicle(plexe, vid, 10, 1, 10, 5, real_engine)
-        plexe.set_fixed_lane(vid, 1, safe=False)
+        add_platooning_vehicle(self.plexe, vid, 10, 1, 10, 5, real_engine)
+        self.plexe.set_fixed_lane(vid, 1, safe=False)
         traci.vehicle.setSpeedMode(vid, 0)
-        plexe.set_active_controller(vid, ACC)
+        self.plexe.set_active_controller(vid, ACC)
         #plexe.set_path_cacc_parameters(vid, distance=JOIN_DISTANCE)
         return topology
 
