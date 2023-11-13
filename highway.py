@@ -16,10 +16,10 @@ class Highway(ParallelEnv):
         self.is_paired_with_runner = False
 
     def reset(self, seed=None, options=None):
-        #try:
-        #    traci.close()
-        #except:
-        #    pass
+        try:
+            traci.close()
+        except:
+            pass
         self._start()
 
 
