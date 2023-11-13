@@ -4,6 +4,7 @@ from gymnasium import spaces
 import functools
 import sys, traci, os
 from plexe import Plexe, ACC, CACC, FAKED_CACC, RPM, GEAR, ACCELERATION, SPEED
+from plexe.vehicle_data import VehicleData
 from utils import add_platooning_vehicle, communicate, get_distance, \
     start_sumo, running
 class Highway(ParallelEnv):
@@ -52,9 +53,9 @@ class Highway(ParallelEnv):
         truncated = {}
         infos = {}
         for agent, action in actions.items():
-            print(self.plexe.get_vehicle_data(agent))
-
-            observations[agent]=random.random()
+            speed = self.plexe.get_vehicle_data(agent)
+            print(speed)
+            observations[agent]=int(speed)
             rewards[agent]=random.random()
             terminated[agent]=False
             truncated[agent]=False
