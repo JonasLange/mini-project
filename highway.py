@@ -39,7 +39,7 @@ class Highway(ParallelEnv):
     def step(self, actions):
         print(actions)
         for agent, action in actions.items():
-            self.plexe.set_cc_desired_speed(agent, action)
+            self.plexe.set_cc_desired_speed(agent, action/3.6)
         #perform the next simulation step
         traci.simulationStep()
 
@@ -73,7 +73,8 @@ class Highway(ParallelEnv):
     
     @functools.lru_cache(maxsize=None)
     def action_space(self, agent):
-        return spaces.Discrete(3)
+        #return spaces.Discrete(3)
+        return spaces.Discrete(120, start=10)
 
     def _start(self):
         #if 'SUMO_HOME' in os.environ:
