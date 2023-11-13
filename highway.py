@@ -11,8 +11,8 @@ class Highway(ParallelEnv):
         "name": "highway_v0",
     }
     def __init__(self):
-        self.possible_agents=["vehicle"]
-        self.agents = ["vehicle","vehicle","vehicle"]
+        self.possible_agents=["learner", "vehicle"]
+        self.agents = ["learner"]
         self.traci_connected = False
 
     def reset(self, seed=None, options=None):
