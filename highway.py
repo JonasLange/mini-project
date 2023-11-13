@@ -76,7 +76,6 @@ class Highway(ParallelEnv):
         start_sumo("cfg/freeway.sumo.cfg", False)
         self.plexe = Plexe()
         traci.addStepListener(self.plexe)
-        self.step = 0
         # create vehicles and track the joiner
         self.topology = self._add_vehicle(self.plexe, False)
         traci.gui.trackVehicle("View #0", "learner")
