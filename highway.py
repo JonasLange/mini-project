@@ -119,6 +119,7 @@ from stable_baselines3 import PPO
 from stable_baselines3.ppo import MlpPolicy
 def train(steps = 10_000):
     env = Highway()
+    env = supersuit.black_death_v3(env)
     env.reset()
     print(f"Starting training on {str(env.metadata['name'])}.")
     env = supersuit.pettingzoo_env_to_vec_env_v1(env)
