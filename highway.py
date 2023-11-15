@@ -32,8 +32,9 @@ class Highway(ParallelEnv):
 
         # create vehicles and track the learner
         self._add_vehicle(False)
-        traci.gui.trackVehicle("View #0", "learner")
-        traci.gui.setZoom("View #0", 20000)
+        if run_gui:
+            traci.gui.trackVehicle("View #0", "learner")
+            traci.gui.setZoom("View #0", 20000)
 
         observations = {}
         for agent in self.agents:
