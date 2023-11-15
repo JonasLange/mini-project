@@ -103,8 +103,7 @@ class Highway(ParallelEnv):
         #plexe.set_path_cacc_parameters(vid, distance=JOIN_DISTANCE)
         return topology
     def _reward(self, emmisions, speed):
-        #currently ignoring emmisions
-        return speed
+        return speed/emmisions
 
 #For Testing
 from pettingzoo.test import parallel_api_test
