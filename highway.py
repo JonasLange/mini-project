@@ -72,8 +72,9 @@ class Highway(ParallelEnv):
         pass
     
     def close(self):
+        print("closing now")
         traci.close()
-        
+
 
     @functools.lru_cache(maxsize=None)
     def observation_space(self, agent):
