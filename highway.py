@@ -7,6 +7,9 @@ from plexe import Plexe, ACC, CACC, FAKED_CACC, RPM, GEAR, ACCELERATION, SPEED
 from plexe.vehicle_data import VehicleData
 from utils import add_platooning_vehicle, communicate, get_distance, \
     start_sumo, running
+
+run_gui = False
+
 class Highway(ParallelEnv):
     metadata = {
         "name": "highway_v0",
@@ -24,7 +27,7 @@ class Highway(ParallelEnv):
             self.traci_connected=True
         else:
             print("resetting existing simulation")
-            start_sumo("cfg/freeway.sumo.cfg", True)
+            start_sumo("cfg/freeway.sumo.cfg", True, gui=run_gui)
             random.seed(1)
 
         # create vehicles and track the learner
@@ -83,7 +86,7 @@ class Highway(ParallelEnv):
         #else:
         #    sys.exit("please declare environment variable 'SUMO_HOME'")
         random.seed(1)
-        start_sumo("cfg/freeway.sumo.cfg", False)
+        start_sumo("cfg/freeway.sumo.cfg", False, gui=run_gui)
         self.plexe = Plexe()
         traci.addStepListener(self.plexe)
 
