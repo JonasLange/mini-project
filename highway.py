@@ -136,6 +136,6 @@ def train(steps = 10_000):
 #For Testing
 from pettingzoo.test import parallel_api_test
 if __name__ == "__main__":
-    env = Highway()
-    #testing for 5 seconds each
-    parallel_api_test(env, num_cycles=500)
+    train()
+    #env = Highway()
+    #parallel_api_test(env, num_cycles=500)#testing for 5 seconds each
