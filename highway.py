@@ -71,6 +71,10 @@ class Highway(ParallelEnv):
     def render(self):
         pass
     
+    def close(self):
+        traci.close()
+        
+
     @functools.lru_cache(maxsize=None)
     def observation_space(self, agent):
         return spaces.Discrete(120, start=10)
@@ -108,6 +112,25 @@ class Highway(ParallelEnv):
         return topology
     def _reward(self, emmisions, speed):
         return speed/emmisions
+
+import supersuit
+from stable_baselines3 import PPO
+from stable_baselines3.ppo import MlpPolicy
+def train(steps = 10_000):
+    env = Highway()
+    env.reset()
+    print(f"Starting training on {str(env.metadata['name'])}.")
+    env = supersuit.pettingzoo_env_to_vec_env_v1(env)
+    env = supersuit.concat_vec_envs_v1(env, 8, num_cpus=1, base_class="stable_baselines3")
+
+    model = PPO(MlpPolicy,env,verbose=3,batch_size=256,)
+    model.learn(total_timesteps=steps)
+    model.save(f"{env.unwrapped.metadata.get('name')}_{time.strftime('%Y%m%d-%H%M%S')}")
+
+    print("Model has been saved.")
+    print(f"Finished training on {str(env.unwrapped.metadata['name'])}.")
+
+    env.close()
 
 #For Testing
 from pettingzoo.test import parallel_api_test

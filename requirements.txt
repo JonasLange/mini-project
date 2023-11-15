@@ -1,3 +1,4 @@
 pettingzoo
 traci
+supersuit
 pip install git+https://github.com/michele-segata/plexe-pyapi.git
