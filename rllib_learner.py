@@ -38,7 +38,7 @@ def train():
         name="PPO",
         stop={"timesteps_total": 5000000},
         checkpoint_freq=10,
-        local_dir="ray_results/" + "highway",
+        #local_dir="ray_results/" + "highway",
         config=config.to_dict(),
     )
 
