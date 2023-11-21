@@ -172,7 +172,7 @@ def train_ray():
 
 def env_creator():
     env = Highway()
-    ss.dtype_v0()
+    env = ss.dtype_v0(env,int)
     return env
 
 #For Testing
