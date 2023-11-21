@@ -38,7 +38,8 @@ class Highway(ParallelEnv):
 
         observations = {}
         for agent in self.agents:
-            observations[agent]=random.random()
+            speed = self.plexe.get_vehicle_data(agent).speed
+            observations[agent]=int(speed)
         infos = {a: {} for a in self.agents}
         return observations, infos
     def step(self, actions):
