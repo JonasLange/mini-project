@@ -114,7 +114,7 @@ class Highway(ParallelEnv):
     def _reward(self, emmisions, speed):
         return speed/emmisions
 
-import supersuit
+import supersuit as ss
 from stable_baselines3 import PPO
 from stable_baselines3.ppo import MlpPolicy
 import time
@@ -122,8 +122,8 @@ def train(steps = 10_000):
     env = Highway()
     env.reset()
     print(f"Starting training on {str(env.metadata['name'])}.")
-    env = supersuit.pettingzoo_env_to_vec_env_v1(env)
-    env = supersuit.concat_vec_envs_v1(env, 8, num_cpus=1, base_class="stable_baselines3")
+    env = ss.pettingzoo_env_to_vec_env_v1(env)
+    env = ss.concat_vec_envs_v1(env, 8, num_cpus=1, base_class="stable_baselines3")
 
     model = PPO(MlpPolicy,env,verbose=3,batch_size=256,)
     model.learn(total_timesteps=steps)
@@ -165,13 +165,15 @@ def train_ray():
         name="PPO",
         stop={"timesteps_total": 5000000},
         checkpoint_freq=10,
-        local_dir="~/ray_results/" + "highway",
+        local_dir="ray_results/" + "highway",
         config=config.to_dict(),
     )
 
 
 def env_creator():
-    return Highway()
+    env = Highway()
+    ss.dtype_v0()
+    return env
 
 #For Testing
 import ray
