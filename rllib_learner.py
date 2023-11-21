@@ -1,0 +1,55 @@
+import supersuit as ss
+from stable_baselines3 import PPO
+from stable_baselines3.ppo import MlpPolicy
+import time
+import ray
+from ray.tune.registry import register_env
+from highway_env import Highway
+
+from ray import tune
+from ray.rllib.algorithms.ppo import PPOConfig
+import os
+def train():
+    print("now training")
+    config = (
+        PPOConfig()
+        .environment(env="highway", clip_actions=True)
+        .rollouts(num_rollout_workers=4, rollout_fragment_length=128)
+        .training(
+            train_batch_size=512,
+            lr=2e-5,
+            gamma=0.99,
+            lambda_=0.9,
+            use_gae=True,
+            clip_param=0.4,
+            grad_clip=None,
+            entropy_coeff=0.1,
+            vf_loss_coeff=0.25,
+            sgd_minibatch_size=64,
+            num_sgd_iter=10,
+        )
+        .debugging(log_level="ERROR")
+        .framework(framework="torch")
+        .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "0")))
+    )
+
+    tune.run(
+        "PPO",
+        name="PPO",
+        stop={"timesteps_total": 5000000},
+        checkpoint_freq=10,
+        local_dir="ray_results/" + "highway",
+        config=config.to_dict(),
+    )
+
+
+def env_creator():
+    env = Highway()
+    env = ss.dtype_v0(env,int)
+    return env
+
+
+if __name__ == "__main__":
+    ray.init()
+    register_env("highway",env_creator)
+    train()
