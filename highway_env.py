@@ -69,6 +69,7 @@ class Highway(ParallelEnv):
             emissions = traci.vehicle.getCO2Emission(agent)
             #print(f"currently emmitting {emissions} mg CO2 per second")
             rewards[agent]=self._reward(speed,emissions)
+            print(f"Reward awarded was {rewards[agent]}")
             terminated[agent]=False
             truncated[agent]=False
             infos[agent]={}
