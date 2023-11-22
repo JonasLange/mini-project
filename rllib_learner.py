@@ -22,7 +22,7 @@ def train():
     )
     algo = config.build()
     for _ in range(5):
-        print(algo.train())
+        algo.train() #retruns progress info
     return algo
 
 def env_creator(env_config):
