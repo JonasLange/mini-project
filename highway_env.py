@@ -73,7 +73,7 @@ class Highway(ParallelEnv):
             rewards[agent]=self._reward(speed,emmissions)
             terminated[agent]=False
             truncated[agent]=False
-            infos[agent]=None
+            infos[agent]={}
         return observations,rewards,terminated,truncated,infos
     
     def render(self):
