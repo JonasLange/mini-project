@@ -35,4 +35,7 @@ if __name__ == "__main__":
     register_env("highway",lambda config: ParallelPettingZooEnv(env_creator(config)))
     algo = train()
     print("done training")
-    algo.evaluate()
+    results = algo.evaluate()
+    print("----------")
+    for key, value in results.items():
+        print("Results for {key}: {value}")
