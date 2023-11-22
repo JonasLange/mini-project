@@ -26,11 +26,7 @@ def train():
     return algo
 
 def env_creator(env_config):
-    print("--------------")
-    print(env_config)
-    print("--------------")
     env = Highway()
-    #env = ss.dtype_v0(env,int)
     return env
 
 from ray.rllib.env.wrappers.pettingzoo_env import ParallelPettingZooEnv
@@ -39,4 +35,7 @@ if __name__ == "__main__":
     register_env("highway",lambda config: ParallelPettingZooEnv(env_creator(config)))
     algo = train()
     print("done training")
-    algo.evaluate()
+    results = algo.evaluate()
+    print("----------")
+    for key, value in results.items():
+        print("Results for {key}: {value}")
