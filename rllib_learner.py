@@ -13,35 +13,17 @@ def train():
     print("now training")
     config = (
         PPOConfig()
-        .environment(env="highway", clip_actions=True)
-        .rollouts(num_rollout_workers=4, rollout_fragment_length=128)
-        .training(
-            train_batch_size=512,
-            lr=2e-5,
-            gamma=0.99,
-            lambda_=0.9,
-            use_gae=True,
-            clip_param=0.4,
-            grad_clip=None,
-            entropy_coeff=0.1,
-            vf_loss_coeff=0.25,
-            sgd_minibatch_size=64,
-            num_sgd_iter=10,
-        )
+        .environment(env="highway")
+        .rollouts(num_rollout_workers=1)
+        .framework("torch")
+        .training(model={"fcnet_hiddens": [64, 64]})
         .debugging(log_level="ERROR")
-        .framework(framework="torch")
-        .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "0")))
+        .evaluation(evaluation_num_workers=1)
     )
-
-    tune.run(
-        "PPO",
-        name="PPO",
-        stop={"timesteps_total": 5000000},
-        checkpoint_freq=10,
-        #local_dir="ray_results/" + "highway",
-        config=config.to_dict(),
-    )
-
+    algo = config.build()
+    for _ in range(5):
+        print(algo.train())
+    return algo
 
 def env_creator():
     env = Highway()
@@ -52,4 +34,6 @@ def env_creator():
 if __name__ == "__main__":
     ray.init()
     register_env("highway",env_creator)
-    train()
+    algo = train()
+    print("done training")
+    algo.evaluate()
