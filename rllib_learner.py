@@ -17,7 +17,6 @@ def train():
         .rollouts(num_rollout_workers=1)
         .framework("torch")
         .training(model={"fcnet_hiddens": [64, 64]})
-        .debugging(log_level="ERROR")
         .evaluation(evaluation_num_workers=1)
     )
     algo = config.build()
