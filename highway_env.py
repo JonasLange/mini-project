@@ -50,7 +50,6 @@ class Highway(ParallelEnv):
     
     def step(self, actions):
         #send the actions
-        #print(actions)
         for agent, action in actions.items():
             self.plexe.set_cc_desired_speed(agent, action/3.6)
         
