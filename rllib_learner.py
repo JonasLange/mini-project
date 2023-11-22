@@ -26,11 +26,7 @@ def train():
     return algo
 
 def env_creator(env_config):
-    print("--------------")
-    print(env_config)
-    print("--------------")
     env = Highway()
-    #env = ss.dtype_v0(env,int)
     return env
 
 from ray.rllib.env.wrappers.pettingzoo_env import ParallelPettingZooEnv
