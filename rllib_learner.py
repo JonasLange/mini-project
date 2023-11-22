@@ -13,7 +13,7 @@ def train():
     print("now training")
     config = (
         PPOConfig()
-        .environment(env="Taxi-v3")
+        .environment(env="highway")
         .rollouts(num_rollout_workers=1)
         .framework("torch")
         .training(model={"fcnet_hiddens": [64, 64]})
@@ -24,9 +24,12 @@ def train():
         print(algo.train())
     return algo
 
-def env_creator():
+def env_creator(env_config):
+    print("--------------")
+    print(env_config)
+    print("--------------")
     env = Highway()
-    env = ss.dtype_v0(env,int)
+    #env = ss.dtype_v0(env,int)
     return env
 
 
