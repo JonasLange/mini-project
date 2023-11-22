@@ -38,4 +38,4 @@ if __name__ == "__main__":
     results = algo.evaluate()
     print("----------")
     for key, value in results.items():
-        print("Results for {key}: {value}")
+        print(f"Results for {key}: {value}")

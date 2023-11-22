@@ -52,7 +52,7 @@ class Highway(ParallelEnv):
         #send the actions
         print(actions)
         for agent, action in actions.items():
-            self.plexe.set_cc_desired_speed(agent, action/3.6)
+            self.plexe.set_cc_desired_speed(agent, 100/3.6)#action/3.6)
         
         #perform the next simulation step
         traci.simulationStep()
@@ -64,9 +64,8 @@ class Highway(ParallelEnv):
         truncated = {}
         infos = {}
         for agent, action in actions.items():
-            speed = self.plexe.get_vehicle_data(agent).speed
-            observations[agent]=int(speed)
             speed = traci.vehicle.getSpeed(agent)*3.6
+            observations[agent]=int(speed)
             print(f"currently traveling at: {speed} km/h")
             emmissions = traci.vehicle.getCO2Emission(agent)
             print(f"currently emmitting {emmissions} mg CO2 per second")
