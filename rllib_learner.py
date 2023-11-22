@@ -13,7 +13,7 @@ def train():
     print("now training")
     config = (
         PPOConfig()
-        .environment(env="highway")
+        .environment(env="Taxi-v3")
         .rollouts(num_rollout_workers=1)
         .framework("torch")
         .training(model={"fcnet_hiddens": [64, 64]})
