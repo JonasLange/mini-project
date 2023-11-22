@@ -21,7 +21,7 @@ def train():
         .evaluation(evaluation_num_workers=1,evaluation_duration=500,evaluation_duration_unit="timesteps", evaluation_interval=500)
     )
     algo = config.build()
-    for _ in range(5):
+    for _ in range(3):
         algo.train() #retruns progress info
     return algo
 
