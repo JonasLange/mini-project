@@ -18,7 +18,12 @@ class Highway(ParallelEnv):
         self.possible_agents=["learner", "vehicle"]
         self.agents = ["learner"]
         self.traci_connected = False
-
+        
+        self.observation_spaces = []
+        self.action_spaces = []
+        for agent in self.agents:
+            self.action_spaces.append(self.action_space(agent))
+            self.observation_spaces.append(self.observation_space(agent))
     def reset(self, seed=None, options=None):
         if not self.traci_connected:
             print("first start")
