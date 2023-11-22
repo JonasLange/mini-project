@@ -114,7 +114,7 @@ class Highway(ParallelEnv):
         self.plexe.set_active_controller(vid, ACC)
         return topology
     def _reward(self, speed, emissions):
-        return speed/max(1,emisions)
+        return speed/max(1,emissions)
 
 
 from pettingzoo.test import parallel_api_test
