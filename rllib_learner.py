@@ -9,6 +9,7 @@ from highway_env import Highway
 from ray import tune
 from ray.rllib.algorithms.ppo import PPOConfig
 import os
+
 def train():
     print("now training")
     config = (
@@ -32,10 +33,10 @@ def env_creator(env_config):
     #env = ss.dtype_v0(env,int)
     return env
 
-
+from ray.rllib.env.wrappers.pettingzoo_env import ParallelPettingZooEnv
 if __name__ == "__main__":
     ray.init()
-    register_env("highway",env_creator)
+    register_env("highway",lambda config: ParallelPettingZooEnv(env_creator(config)))
     algo = train()
     print("done training")
     algo.evaluate()
