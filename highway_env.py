@@ -86,11 +86,11 @@ class Highway(ParallelEnv):
 
     @functools.lru_cache(maxsize=None)
     def observation_space(self, agent):
-        return spaces.Discrete(120, start=10)
+        return spaces.Discrete(131, start=0)#0-130
     
     @functools.lru_cache(maxsize=None)
     def action_space(self, agent):
-        return spaces.Discrete(120, start=10)
+        return spaces.Discrete(120, start=10)#10-129
 
     def _start(self):
         #if 'SUMO_HOME' in os.environ:
