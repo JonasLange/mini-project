@@ -18,7 +18,7 @@ def train():
         .rollouts(num_rollout_workers=1)
         .framework("torch")
         .training(model={"fcnet_hiddens": [64, 64]})
-        .evaluation(evaluation_num_workers=1)
+        .evaluation(evaluation_num_workers=1,evaluation_duration=500,evaluation_duration_unit="timesteps")
     )
     algo = config.build()
     for _ in range(5):
