@@ -37,5 +37,5 @@ if __name__ == "__main__":
     print("done training")
     results = algo.evaluate()
     print("----------")
-    for key, value in results.items():
+    for key, value in results["evaluation"].items():
         print(f"Results for {key}: {value}")
