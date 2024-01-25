@@ -39,3 +39,4 @@ if __name__ == "__main__":
     print("----------")
     for key, value in results.items():
         print(f"Results for {key}: {value}")
+        print(f"{key}")
