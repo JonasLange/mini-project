@@ -8,7 +8,7 @@ from plexe.vehicle_data import VehicleData
 from utils import add_platooning_vehicle, communicate, get_distance, \
     start_sumo, running
 
-run_gui = False
+run_gui = True
 
 class Highway(ParallelEnv):
     metadata = {
