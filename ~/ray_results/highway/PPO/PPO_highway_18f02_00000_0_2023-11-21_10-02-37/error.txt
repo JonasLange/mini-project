@@ -1,9 +1,0 @@
-Failure # 1 (occurred at 2023-11-21_10-02-41)
-The actor died because of an error raised in its creation task, [36mray::PPO.__init__()[39m (pid=2559, ip=172.17.0.2, actor_id=6926c3ccb0298cfb73dc3d9201000000, repr=PPO)
-  File "/usr/local/lib/python3.8/dist-packages/ray/rllib/algorithms/algorithm.py", line 443, in __init__
-    self._env_id, self.env_creator = self._get_env_id_and_creator(
-  File "/usr/local/lib/python3.8/dist-packages/ray/rllib/algorithms/algorithm.py", line 2294, in _get_env_id_and_creator
-    return env_specifier, _global_registry.get(ENV_CREATOR, env_specifier)
-  File "/usr/local/lib/python3.8/dist-packages/ray/tune/registry.py", line 270, in get
-    return pickle.loads(value)
-AttributeError: Can't get attribute 'Highway.observation_space' on <module '__main__' from '/usr/local/lib/python3.8/dist-packages/ray/_private/workers/default_worker.py'>
