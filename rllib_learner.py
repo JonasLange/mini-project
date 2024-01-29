@@ -33,9 +33,11 @@ def env_creator(env_config):
     return env
 
 from ray.rllib.env.wrappers.pettingzoo_env import ParallelPettingZooEnv
+from rllib_multi_agent_env import Highway
 if __name__ == "__main__":
     ray.init(num_cpus=4)
-    register_env("highway",lambda config: ParallelPettingZooEnv(env_creator(config)))
+    #register_env("highway",lambda config: ParallelPettingZooEnv(env_creator(config)))
+    register_env("highway",lambda config: Highway())
     algo = train()
     print("done training")
     results = algo.evaluate()

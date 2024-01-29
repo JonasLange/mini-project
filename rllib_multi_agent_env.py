@@ -8,15 +8,14 @@ from plexe import Plexe, ACC, CACC, FAKED_CACC, RPM, GEAR, ACCELERATION, SPEED
 from utils import add_platooning_vehicle, communicate, get_distance, \
     start_sumo, running
 
-run_gui = True
+run_gui = False
 
 class Highway(MultiAgentEnv):
     metadata = {
         "name": "highway_v0",
     }
-    def __init__(self, num_learners=1, num_vehicles=0):
-        self.possible_agents=["learner", "vehicle"]
-        self.agents = ["learner"]
+    def __init__(self, num_learners=1):
+        self.agents = [str(i) for i in range(num_learners)]
         self.traci_connected = False
         
         self.observation_spaces = {}
@@ -33,12 +32,11 @@ class Highway(MultiAgentEnv):
         else:
             print("resetting existing simulation")
             start_sumo("cfg/freeway.sumo.cfg", True, gui=run_gui)
-            random.seed(1)
 
-        # create vehicles and track the learner
-        self._add_vehicle(False)
+        # create vehicles and track the first learner
+        self._add_vehicles()
         if run_gui:
-            traci.gui.trackVehicle("View #0", "learner")
+            traci.gui.trackVehicle("View #0", "0")
             traci.gui.setZoom("View #0", 20000)
 
         observations = {}
@@ -103,22 +101,15 @@ class Highway(MultiAgentEnv):
         traci.addStepListener(self.plexe)
 
 
-    def _add_vehicle(self, real_engine=False):
+    def _add_vehicles(self):
         """
         Adds the learner to the simulation
         """
-        topology = {}
-        vid = "learner"
-        add_platooning_vehicle(self.plexe, vid, 10, 1, 10, 5, real_engine)
-        self.plexe.set_fixed_lane(vid, 1, safe=False)
-        traci.vehicle.setSpeedMode(vid, 0)
-        self.plexe.set_active_controller(vid, ACC)
-        return topology
+        for vid in self.agents:
+            add_platooning_vehicle(self.plexe, vid, 10*(int(vid)+1), 1, 10, 5, False)
+            self.plexe.set_fixed_lane(vid, 1, safe=False)
+            traci.vehicle.setSpeedMode(vid, 0)
+            self.plexe.set_active_controller(vid, ACC)
+
     def _reward(self, speed, emissions):
         return speed/max(1,emissions)
-
-
-from pettingzoo.test import parallel_api_test
-if __name__ == "__main__":
-    env = Highway()
-    parallel_api_test(env, num_cycles=500)#testing for 5 seconds each
