@@ -37,7 +37,7 @@ from rllib_multi_agent_env import Highway
 if __name__ == "__main__":
     ray.init(num_cpus=4)
     #register_env("highway",lambda config: ParallelPettingZooEnv(env_creator(config)))
-    register_env("highway",lambda config: Highway())
+    register_env("highway",lambda config: Highway(1))
     algo = train()
     print("done training")
     results = algo.evaluate()
