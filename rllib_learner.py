@@ -4,7 +4,7 @@ from stable_baselines3.ppo import MlpPolicy
 import time
 import ray
 from ray.tune.registry import register_env
-from highway_env import Highway
+#from highway_env import Highway
 
 from ray import tune
 from ray.rllib.algorithms.ppo import PPOConfig
