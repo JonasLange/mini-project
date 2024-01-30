@@ -15,14 +15,19 @@ class Highway(MultiAgentEnv):
         "name": "highway_v0",
     }
     def __init__(self, num_learners=1):
+        super(Highway,self).__init__()
         self.agents = [str(i) for i in range(num_learners)]
+        self._agent_ids = [str(i) for i in range(num_learners)]
         self.traci_connected = False
         
-        self.observation_spaces = {}
-        self.action_spaces = {}
+
+        self.observation_space = spaces.Dict()
+        self.action_space = spaces.Dict()
         for agent in self.agents:
-            self.action_spaces[agent]=self.action_space(agent)
-            self.observation_spaces[agent]=self.observation_space(agent)
+            self.action_space[agent]=spaces.Discrete(120, start=10)#10-129 km/h
+            self.observation_space[agent]=spaces.Discrete(131, start=0)#0-130 km/h
+
+
 
     def reset(self, seed=None, options=None):
         if not self.traci_connected:
@@ -44,6 +49,7 @@ class Highway(MultiAgentEnv):
             speed = self.plexe.get_vehicle_data(agent).speed
             observations[agent]=int(speed)
         infos = {a: {} for a in self.agents}
+        print(observations)
         return observations, infos
     
     def step(self, actions):
@@ -57,20 +63,21 @@ class Highway(MultiAgentEnv):
         #ToDo: calc observations/rewards
         observations = {}
         rewards={}
-        terminated = {}
-        truncated = {}
+        terminated = {"__all__":False}
+        truncated = {"__all__":False}
         infos = {}
-        for agent, action in actions.items():
+        for agent in self.agents:
             speed = traci.vehicle.getSpeed(agent)*3.6
             observations[agent]=int(speed)
             #print(f"currently traveling at: {speed} km/h")
             emissions = traci.vehicle.getCO2Emission(agent)
             #print(f"currently emmitting {emissions} mg CO2 per second")
             rewards[agent]=self._reward(speed,emissions)
-            print(f"Reward awarded was {rewards[agent]}")
             terminated[agent]=False
             truncated[agent]=False
             infos[agent]={}
+        print(f"observations: {observations}")
+        print(f"rewards: {rewards}")
         return observations,rewards,terminated,truncated,infos
     
     def render(self):
@@ -80,14 +87,6 @@ class Highway(MultiAgentEnv):
         print("closing now")
         traci.close()
 
-
-    @functools.lru_cache(maxsize=None)
-    def observation_space(self, agent):
-        return spaces.Discrete(131, start=0)#0-130
-    
-    @functools.lru_cache(maxsize=None)
-    def action_space(self, agent):
-        return spaces.Discrete(120, start=10)#10-129
 
     def _start(self):
         #if 'SUMO_HOME' in os.environ:

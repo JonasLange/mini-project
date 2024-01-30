@@ -18,10 +18,10 @@ def train():
         .rollouts(num_rollout_workers=1)
         .framework("torch")
         .training(model={"fcnet_hiddens": [64, 64]})
-        .evaluation(evaluation_num_workers=1,evaluation_duration=500,evaluation_duration_unit="timesteps", evaluation_interval=500)
+        .evaluation(evaluation_num_workers=1,evaluation_duration=500,evaluation_duration_unit="timesteps", evaluation_interval=1)
     )
     algo = config.build()
-    for _ in range(3):
+    for _ in range(1):
         info = algo.train() #retruns progress info
         print("Training iteration done, now printing progress")
         for key, value in info.items():
@@ -32,7 +32,7 @@ def env_creator(env_config):
     env = Highway()
     return env
 
-from ray.rllib.env.wrappers.pettingzoo_env import ParallelPettingZooEnv
+#from ray.rllib.env.wrappers.pettingzoo_env import ParallelPettingZooEnv
 from rllib_multi_agent_env import Highway
 if __name__ == "__main__":
     ray.init(num_cpus=4)
